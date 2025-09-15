@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="360" height="80" viewBox="0 0 360 80" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Decorative lines">
+  <g stroke="white" stroke-linecap="round">
+    <line x1="0" y1="10.5" x2="280" y2="10.5" stroke-opacity="0.25"/>
+    <line x1="0" y1="20.5" x2="300" y2="20.5" stroke-opacity="0.35"/>
+    <line x1="0" y1="30.5" x2="320" y2="30.5" stroke-opacity="0.5"/>
+    <line x1="0" y1="40.5" x2="340" y2="40.5" stroke-opacity="0.8"/>
+    <line x1="0" y1="50.5" x2="320" y2="50.5" stroke-opacity="0.5"/>
+    <line x1="0" y1="60.5" x2="300" y2="60.5" stroke-opacity="0.35"/>
+    <line x1="0" y1="70.5" x2="280" y2="70.5" stroke-opacity="0.25"/>
+  </g>
+  <defs>
+    <linearGradient id="fade" x1="0" y1="0" x2="360" y2="0" gradientUnits="userSpaceOnUse">
+      <stop stop-opacity="0.0"/>
+      <stop offset="0.1" stop-opacity="0.5"/>
+      <stop offset="1" stop-opacity="1"/>
+    </linearGradient>
+    <mask id="m">
+      <rect width="360" height="80" fill="url(#fade)"/>
+    </mask>
+  </defs>
+  <rect width="360" height="80" fill="transparent" mask="url(#m)"/>
+</svg>
