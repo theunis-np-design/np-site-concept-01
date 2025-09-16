@@ -19,6 +19,37 @@
   img.src = src;
 })();
 
+// Hero video: respect reduced motion and ensure playback starts when possible
+(function () {
+  const video = document.querySelector('.hero-video');
+  if (!video) return;
+
+  const prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (prefersReduced) {
+    // Disable motion for users who prefer reduced motion
+    video.removeAttribute('autoplay');
+    video.removeAttribute('loop');
+    try { video.pause(); } catch (_) {}
+    return;
+  }
+
+  // Try to play when ready
+  const tryPlay = () => {
+    const p = video.play();
+    if (p && typeof p.then === 'function') {
+      p.catch(() => {
+        // Autoplay might be blocked until user interaction; ignore
+      });
+    }
+  };
+
+  if (video.readyState >= 2) {
+    tryPlay();
+  } else {
+    video.addEventListener('canplay', tryPlay, { once: true });
+  }
+})();
+
 // Stacked slides scroll interaction using GSAP + ScrollTrigger
 (function () {
   if (!(window.gsap && window.ScrollTrigger)) return;
