@@ -100,3 +100,109 @@
   const y = document.getElementById('year');
   if (y) y.textContent = new Date().getFullYear();
 })();
+
+// CTA cursor-follow glow for pharmacovigilance button(s)
+(function () {
+  const buttons = document.querySelectorAll('.cta-report');
+  if (!buttons.length) return;
+
+  function setPos(el, x, y) {
+    el.style.setProperty('--mx', x + 'px');
+    el.style.setProperty('--my', y + 'px');
+  }
+
+  buttons.forEach((btn) => {
+    btn.addEventListener('pointermove', (e) => {
+      const r = btn.getBoundingClientRect();
+      const x = e.clientX - r.left;
+      const y = e.clientY - r.top;
+      setPos(btn, x, y);
+    });
+    // Touch move support
+    btn.addEventListener('touchstart', (e) => {
+      const t = e.touches[0];
+      if (!t) return;
+      const r = btn.getBoundingClientRect();
+      setPos(btn, t.clientX - r.left, t.clientY - r.top);
+    }, { passive: true });
+    btn.addEventListener('touchmove', (e) => {
+      const t = e.touches[0];
+      if (!t) return;
+      const r = btn.getBoundingClientRect();
+      setPos(btn, t.clientX - r.left, t.clientY - r.top);
+    }, { passive: true });
+  });
+})();
+
+// Foundation Intro: static positions handled by CSS only
+
+// Careers cards modal (accessible)
+(function () {
+  const modal = document.getElementById('cc-modal');
+  const cards = document.querySelectorAll('.cc-card');
+  if (!modal || !cards.length) return;
+
+  const dialog = modal.querySelector('.modal__dialog');
+  const content = modal.querySelector('.modal__content');
+  const closeBtn = modal.querySelector('.modal__close');
+  let lastFocus = null;
+
+  function openModal(fromCard) {
+    lastFocus = document.activeElement;
+    const titleEl = fromCard.querySelector('.cc-title');
+    const subtitleEl = fromCard.querySelector('.cc-subtitle');
+    const textEl = fromCard.querySelector('.cc-text');
+    const title = titleEl ? titleEl.textContent.trim() : '';
+    const subtitle = subtitleEl ? subtitleEl.textContent.trim() : '';
+    const text = textEl ? textEl.textContent.trim() : '';
+
+    content.innerHTML = `
+      ${title ? '<h3>' + title + '</h3>' : ''}
+      ${subtitle ? '<h4>' + subtitle + '</h4>' : ''}
+      ${text ? '<p>' + text + '</p>' : ''}
+    `;
+
+    modal.classList.add('open');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('no-scroll');
+    requestAnimationFrame(() => dialog.focus());
+    document.addEventListener('keydown', onKeyDown);
+  }
+
+  function closeModal() {
+    modal.classList.remove('open');
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('no-scroll');
+    document.removeEventListener('keydown', onKeyDown);
+    if (lastFocus && typeof lastFocus.focus === 'function') lastFocus.focus();
+  }
+
+  function onKeyDown(e) {
+    if (e.key === 'Escape') {
+      e.preventDefault();
+      closeModal();
+      return;
+    }
+    if (e.key === 'Tab') {
+      const focusables = dialog.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+      const els = Array.prototype.slice.call(focusables);
+      if (!els.length) { e.preventDefault(); dialog.focus(); return; }
+      const first = els[0];
+      const last = els[els.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    }
+  }
+
+  // Wire up interactions
+  modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+  if (closeBtn) closeBtn.addEventListener('click', closeModal);
+
+  cards.forEach((card) => {
+    const activate = () => openModal(card);
+    card.addEventListener('click', activate);
+    card.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(); }
+    });
+  });
+})();
