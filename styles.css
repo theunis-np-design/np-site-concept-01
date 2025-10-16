@@ -12,7 +12,7 @@ body {
   margin: 0;
   font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
   color: #0b0f12;
-  background: #0b0f12;
+  background: #000;
 }
 
 /* Custom Font: Champagne & Limousines Bold
@@ -28,7 +28,7 @@ body {
 
 .page {
   min-height: 100dvh;
-  background: #000; /* fallback behind image */
+  background: #000; /* black */
   border-top-left-radius: 0;
   border-top-right-radius: 0;
   border-bottom-left-radius: 0;
@@ -1185,7 +1185,7 @@ body.no-scroll { overflow: hidden; }
    ============================================ */
 .resources-hero {
   position: relative;
-  background: radial-gradient(circle, #348F41 0%, #72C92C 50%, #22702F 100%);
+  background: #348F41;
   color: #fff;
   padding: clamp(140px, 14vw, 200px) 0 clamp(100px, 12vw, 160px);
   border-bottom-left-radius: 80px;
